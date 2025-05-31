@@ -13,12 +13,13 @@ const openai = new OpenAI({ // Initialize OpenAI client
 });
 
 app.use(cors()); // Enable CORS for all routes
-app.use(express.json()); // Middleware to parse JSON bodies (this should generally be before specific raw routes if not handled carefully)
-
+// IMPORTANT: express.raw needs to be before express.json() if you want to use it for specific routes
+// and then use express.json() for others. If express.json() is global and before, webhook will fail.
+// For this app, we'll define Stripe webhook route first, then global express.json().
 const db = require('./config/db'); // Import database configuration
 
 // --- Registration Route ---
-app.post('/api/auth/register', async (req, res) => {
+app.post('/api/auth/register', express.json(), async (req, res) => { // Added express.json() middleware specifically
     try {
         const { email, password } = req.body;
         if (!email || !password) {
@@ -52,7 +53,7 @@ app.post('/api/auth/register', async (req, res) => {
 });
 
 // --- Login Route ---
-app.post('/api/auth/login', async (req, res) => {
+app.post('/api/auth/login', express.json(), async (req, res) => { // Added express.json() middleware specifically
     try {
         const { email, password } = req.body;
         if (!email || !password) {
@@ -80,97 +81,10 @@ app.post('/api/auth/login', async (req, res) => {
     }
 });
 
-// --- Email Report Endpoint ---
-const { sendEmail } = require('./services/emailService'); // Adjust path if your service is elsewhere
-
-app.post('/api/reports/:reportId/email', async (req, res) => {
-    const { userId, recipientEmail: customRecipientEmail } = req.body;
-    const { reportId } = req.params;
-
-    if (!userId) {
-        // In a real app, this would be req.user.id from auth middleware
-        return res.status(401).json({ message: 'User authentication required.' });
-    }
-
-    try {
-        // 1. Verify report ownership and fetch report data
-        const reportRes = await db.query(
-            'SELECT * FROM reports WHERE id = $1 AND user_id = $2',
-            [reportId, userId]
-        );
-        if (reportRes.rows.length === 0) {
-            return res.status(404).json({ message: 'Report not found or access denied.' });
-        }
-        const report = reportRes.rows[0];
-
-        // 2. Determine target email
-        let targetEmail = customRecipientEmail;
-        if (!targetEmail) { // If no custom recipient, send to the report owner
-            const userRes = await db.query('SELECT email FROM users WHERE id = $1', [userId]);
-            if (userRes.rows.length > 0) {
-                targetEmail = userRes.rows[0].email;
-            } else {
-                // This case should ideally not happen if userId is valid and report ownership is verified
-                return res.status(404).json({ message: 'Report owner email not found.' });
-            }
-        }
-
-        if (!targetEmail) { // Should be caught by previous checks, but as a safeguard
-            return res.status(400).json({ message: 'Recipient email is required and could not be determined.' });
-        }
-
-        // 3. Format report for HTML email
-        let htmlContent = `<h1>${report.report_title}</h1>`;
-        htmlContent += `<p>This report was generated for: ${report.input_name || 'N/A'}`;
-        if (report.input_birth_date) htmlContent += ` (Born: ${new Date(report.input_birth_date).toLocaleDateString()})`;
-        if (report.input_birth_time) htmlContent += ` at ${report.input_birth_time}`;
-        if (report.input_birth_place) htmlContent += ` in ${report.input_birth_place}`;
-        htmlContent += `)</p><hr style="margin: 20px 0;">`;
-
-        for (let i = 1; i <= 5; i++) {
-            const slideTitle = report[`slide${i}_title`];
-            const slideContent = report[`slide${i}_content`];
-            if (slideTitle && slideContent) {
-                htmlContent += `<h2 style="color: #5A67D8; margin-top: 25px;">${slideTitle}</h2><div style="font-size: 1.1em; line-height: 1.6;">${slideContent.replace(/\n/g, '<br>')}</div>`;
-            }
-        }
-        htmlContent += `<br><hr style="margin: 20px 0;"><p style="font-size: 0.9em; color: #718096;">Thank you for using Cosmic Lottery! Explore more at <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}">our website</a>.</p>`;
-        htmlContent += `<p style="font-size: 0.8em; color: #A0AEC0;">Report ID: ${report.id}</p>`;
-
-        // 4. Send email
-        const emailResult = await sendEmail(
-            targetEmail,
-            `Your Cosmic Lottery Report: ${report.report_title}`,
-            htmlContent
-        );
-
-        if (emailResult.success) {
-            res.status(200).json({ message: `Report successfully emailed to ${targetEmail}` });
-        } else {
-            // Log the full error for backend diagnostics if needed
-            console.error("Email sending failed with internal service error:", emailResult.error, "Details:", emailResult.details);
-            res.status(500).json({ message: 'Failed to send email due to an internal error.', error: emailResult.error });
-        }
-
-    } catch (error) {
-        console.error('Error processing /email-report request:', error);
-        res.status(500).json({ message: 'Server error while preparing to email report.' });
-    }
-});
-
-
-app.get('/', (req, res) => {
-  res.send('Cosmic Lottery Backend is running!');
-});
-
-
 // Stripe Configuration
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-// Stripe Webhook Handler - IMPORTANT: This route needs to be before app.use(express.json())
-// if express.json() is registered globally, or use specific middleware order.
-// For simplicity, we'll assume express.json() is not globally breaking raw body parsing here,
-// but in complex apps, ensure raw body is available for Stripe.
+// Stripe Webhook Handler
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 app.post('/api/stripe/webhook', express.raw({type: 'application/json'}), async (req, res) => {
   const sig = req.headers['stripe-signature'];
@@ -236,11 +150,65 @@ app.post('/api/stripe/webhook', express.raw({type: 'application/json'}), async (
   res.status(200).send();
 });
 
-// General app.use(express.json()) should be after routes that need raw body, like webhooks.
-// If it was global before, it's fine here. If not, it was added earlier.
+// Now, use express.json() for other routes that need it.
+app.use(express.json());
+
+
+// --- Email Report Endpoint ---
+const { sendEmail } = require('./services/emailService');
+app.post('/api/reports/:reportId/email', async (req, res) => { // express.json() will apply here
+    const { userId, recipientEmail: customRecipientEmail } = req.body;
+    const { reportId } = req.params;
+
+    if (!userId) {
+        return res.status(401).json({ message: 'User authentication required.' });
+    }
+
+    try {
+        const reportRes = await db.query( 'SELECT * FROM reports WHERE id = $1 AND user_id = $2', [reportId, userId] );
+        if (reportRes.rows.length === 0) {
+            return res.status(404).json({ message: 'Report not found or access denied.' });
+        }
+        const report = reportRes.rows[0];
+        let targetEmail = customRecipientEmail;
+        if (!targetEmail) {
+            const userRes = await db.query('SELECT email FROM users WHERE id = $1', [userId]);
+            if (userRes.rows.length > 0) targetEmail = userRes.rows[0].email;
+            else return res.status(404).json({ message: 'Report owner email not found.' });
+        }
+        if (!targetEmail) return res.status(400).json({ message: 'Recipient email is required and could not be determined.' });
+
+        let htmlContent = `<h1>${report.report_title}</h1>`;
+        htmlContent += `<p>This report was generated for: ${report.input_name || 'N/A'}`;
+        if (report.input_birth_date) htmlContent += ` (Born: ${new Date(report.input_birth_date).toLocaleDateString()})`;
+        if (report.input_birth_time) htmlContent += ` at ${report.input_birth_time}`;
+        if (report.input_birth_place) htmlContent += ` in ${report.input_birth_place}`;
+        htmlContent += `)</p><hr style="margin: 20px 0;">`;
+        for (let i = 1; i <= 5; i++) {
+            const slideTitle = report[`slide${i}_title`];
+            const slideContent = report[`slide${i}_content`];
+            if (slideTitle && slideContent) {
+                htmlContent += `<h2 style="color: #5A67D8; margin-top: 25px;">${slideTitle}</h2><div style="font-size: 1.1em; line-height: 1.6;">${slideContent.replace(/\n/g, '<br>')}</div>`;
+            }
+        }
+        htmlContent += `<br><hr style="margin: 20px 0;"><p style="font-size: 0.9em; color: #718096;">Thank you for using Cosmic Lottery! Explore more at <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}">our website</a>.</p>`;
+        htmlContent += `<p style="font-size: 0.8em; color: #A0AEC0;">Report ID: ${report.id}</p>`;
+
+        const emailResult = await sendEmail(targetEmail, `Your Cosmic Lottery Report: ${report.report_title}`, htmlContent);
+        if (emailResult.success) res.status(200).json({ message: `Report successfully emailed to ${targetEmail}` });
+        else res.status(500).json({ message: 'Failed to send email due to an internal error.', error: emailResult.error });
+    } catch (error) {
+        console.error('Error processing /email-report request:', error);
+        res.status(500).json({ message: 'Server error while preparing to email report.' });
+    }
+});
+
+app.get('/', (req, res) => {
+  res.send('Cosmic Lottery Backend is running!');
+});
 
 // --- Stripe Create Checkout Session Route ---
-app.post('/api/stripe/create-checkout-session', async (req, res) => {
+app.post('/api/stripe/create-checkout-session', async (req, res) => { // express.json() will apply here
     const { itemId, userId } = req.body;
 
     if (!itemId || !userId) {
@@ -250,15 +218,15 @@ app.post('/api/stripe/create-checkout-session', async (req, res) => {
     let line_items;
     let metadata;
 
-    if (itemId === 'single_report_20000') {
+    if (itemId === 'single_report_2000') { // Updated itemId and price
         line_items = [{
-            price_data: { currency: 'usd', product_data: { name: 'Single Cosmic Report' }, unit_amount: 20000 },
+            price_data: { currency: 'usd', product_data: { name: 'Single Cosmic Report' }, unit_amount: 2000 }, // $20.00
             quantity: 1,
         }];
         metadata = { userId, purchaseType: 'single_report', reportCreditsToGrant: 1, itemId };
-    } else if (itemId === 'bundle_3_reports_48000') {
+    } else if (itemId === 'bundle_3_reports_5000') { // Updated itemId and price
         line_items = [{
-            price_data: { currency: 'usd', product_data: { name: '3 Report Bundle' }, unit_amount: 48000 },
+            price_data: { currency: 'usd', product_data: { name: '3 Report Bundle' }, unit_amount: 5000 }, // $50.00
             quantity: 1,
         }];
         metadata = { userId, purchaseType: 'bundle_3_reports', reportCreditsToGrant: 3, itemId };
@@ -284,7 +252,7 @@ app.post('/api/stripe/create-checkout-session', async (req, res) => {
 });
 
 // --- Report Generation Route ---
-app.post('/api/report/generate', async (req, res) => {
+app.post('/api/report/generate', async (req, res) => { // express.json() will apply here
     const { userId, name, birthDate, birthTime, birthPlace } = req.body;
 
     if (!userId) {
@@ -382,7 +350,7 @@ Interpret with nuance using classical and modern astrology, integrating house pl
 });
 
 // --- Get User Credits Route ---
-app.get('/api/user/credits/:userId', async (req, res) => {
+app.get('/api/user/credits/:userId', async (req, res) => { // express.json() will apply here if it's global now
     const { userId } = req.params;
     if (!userId) {
         return res.status(400).json({ message: 'User ID is required.' });
@@ -401,7 +369,7 @@ app.get('/api/user/credits/:userId', async (req, res) => {
 });
 
 // --- Get User's Reports Route ---
-app.get('/api/reports/my-reports/:userId', async (req, res) => {
+app.get('/api/reports/my-reports/:userId', async (req, res) => { // express.json() will apply here
     const { userId } = req.params;
     if (!userId) {
         return res.status(400).json({ message: 'User ID is required.' });
@@ -426,16 +394,15 @@ app.get('/api/reports/my-reports/:userId', async (req, res) => {
 const crypto = require('crypto');
 
 // Generate/Enable Sharing for a Report
-app.post('/api/reports/:reportId/share', async (req, res) => {
+app.post('/api/reports/:reportId/share', async (req, res) => { // express.json() will apply here
     const { reportId } = req.params;
-    const { userId } = req.body; // In a real app, userId should come from authenticated session (e.g., req.user.id)
+    const { userId } = req.body;
 
     if (!userId) {
         return res.status(401).json({ message: 'User authentication required.' });
     }
 
     try {
-        // Verify ownership
         const reportResult = await db.query('SELECT id, user_id FROM reports WHERE id = $1 AND user_id = $2', [reportId, userId]);
         if (reportResult.rows.length === 0) {
             return res.status(403).json({ message: 'Forbidden: You do not own this report or report not found.' });
@@ -449,7 +416,7 @@ app.post('/api/reports/:reportId/share', async (req, res) => {
 
         res.status(200).json({
             message: 'Report sharing enabled.',
-            shareLink: `/share/report/${updateResult.rows[0].share_token}`, // Relative link for frontend
+            shareLink: `/share/report/${updateResult.rows[0].share_token}`,
             shareToken: updateResult.rows[0].share_token
         });
     } catch (error) {
@@ -459,16 +426,15 @@ app.post('/api/reports/:reportId/share', async (req, res) => {
 });
 
 // Disable Sharing for a Report
-app.post('/api/reports/:reportId/stop-sharing', async (req, res) => {
+app.post('/api/reports/:reportId/stop-sharing', async (req, res) => { // express.json() will apply here
     const { reportId } = req.params;
-    const { userId } = req.body; // userId for ownership verification
+    const { userId } = req.body;
 
     if (!userId) {
         return res.status(401).json({ message: 'User authentication required.' });
     }
 
     try {
-        // Verify ownership
         const reportResult = await db.query('SELECT id FROM reports WHERE id = $1 AND user_id = $2', [reportId, userId]);
         if (reportResult.rows.length === 0) {
             return res.status(403).json({ message: 'Forbidden: You do not own this report or report not found.' });
@@ -486,7 +452,7 @@ app.post('/api/reports/:reportId/stop-sharing', async (req, res) => {
 });
 
 // View Shared Report (Public)
-app.get('/api/public/reports/shared/:share_token', async (req, res) => {
+app.get('/api/public/reports/shared/:share_token', async (req, res) => { // Does not need express.json() as it takes params
     const { share_token } = req.params;
     try {
         const result = await db.query(
@@ -503,12 +469,9 @@ app.get('/api/public/reports/shared/:share_token', async (req, res) => {
             return res.status(404).json({ message: 'Report not found, not shared, or token is invalid.' });
         }
 
-        // Reconstruct the report in the desired slides format for ReportDisplay component
         const dbReport = result.rows[0];
         const sharedReport = {
             reportTitle: dbReport.report_title,
-            // inputName: dbReport.input_name, // Optionally include for context on shared page
-            // createdAt: dbReport.created_at, // Optionally include
             slides: [
                 { title: dbReport.slide1_title, content: dbReport.slide1_content },
                 { title: dbReport.slide2_title, content: dbReport.slide2_content },
@@ -523,7 +486,6 @@ app.get('/api/public/reports/shared/:share_token', async (req, res) => {
         res.status(500).json({ message: 'Error fetching shared report.' });
     }
 });
-
 
 app.listen(port, () => {
   console.log(`Backend server listening on port ${port}`);

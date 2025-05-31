@@ -75,7 +75,7 @@ export default function PricingPage() {
         {
             id: 'single_report',
             name: 'Single Report',
-            price: '$200',
+            price: '$20',  // Updated price
             priceSuffix: '.00',
             description: 'A complete 5-section natal chart analysis.',
             features: [
@@ -88,15 +88,15 @@ export default function PricingPage() {
             textColor: 'text-purple-300',
             gradientClass: 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700',
             disabled: false,
-            itemId: 'single_report_20000' // item ID for Stripe, price in cents
+            itemId: 'single_report_2000' // Updated itemId (2000 cents)
         },
         {
-            id: 'bundle_3_reports', // New ID for this bundle
+            id: 'bundle_3_reports',
             name: '3 Report Bundle',
-            price: '$480', // New Price
+            price: '$50',  // Updated price
             priceSuffix: '.00',
-            originalPrice: '$600.00', // Original price if 3 * $200
-            description: 'Save $120! Three full reports.',
+            originalPrice: '$60.00', // Original price if 3 * $20
+            description: 'Save $10! Three full reports.', // Updated description
             features: ['Three full reports', 'Perfect for gifting or multiple analyses', 'Best value for dedicated explorers'],
             buttonText: 'Purchase Bundle',
             buttonClass: 'btn-primary',
@@ -104,7 +104,7 @@ export default function PricingPage() {
             textColor: 'text-teal-300',
             gradientClass: 'bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700',
             disabled: false,
-            itemId: 'bundle_3_reports_48000'
+            itemId: 'bundle_3_reports_5000' // Updated itemId (5000 cents)
         },
         {
             id: 'monthly_explorer',
