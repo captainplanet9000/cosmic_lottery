@@ -1,26 +1,48 @@
 'use client';
 import { loadStripe } from '@stripe/stripe-js';
+import { useState, useEffect } from 'react'; // Added useEffect for userId
+// import { useRouter } from 'next/navigation'; // Optional: for redirecting to login
 
 // Make sure to replace with your actual test publishable key
-const stripePromise = loadStripe('pk_test_YOUR_STRIPE_PUBLISHABLE_KEY_PLACEHOLDER');
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || 'pk_test_YOUR_STRIPE_PUBLISHABLE_KEY_PLACEHOLDER');
 
 export default function PricingPage() {
     const [isLoading, setIsLoading] = useState(false);
+    const [planIdBeingProcessed, setPlanIdBeingProcessed] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [userId, setUserId] = useState<string | null>(null);
+    // const router = useRouter(); // Optional: for redirecting
 
-    // Placeholder for future, more complex purchase logic
-    const handlePurchase = async (planId: string) => {
-        if (planId !== 'single_report') {
-            alert('This plan is not yet available for purchase.');
+    useEffect(() => {
+        // Attempt to get userId from localStorage (assuming it's stored on login)
+        const storedUserId = localStorage.getItem('userId');
+        if (storedUserId) {
+            setUserId(storedUserId);
+        }
+    }, []);
+
+    const handlePurchase = async (planId: string, itemId?: string) => {
+        if (!itemId || planId === 'monthly_explorer' || planId === 'annual_pro') {
+            alert('This plan is not yet available for purchase or item ID is missing.');
             return;
         }
+
+        if (!userId) {
+            setError("Please log in to make a purchase. Your user ID is needed to assign credits.");
+            // router.push('/login'); // Optional: redirect to login
+            return;
+        }
+
         setIsLoading(true);
+        setPlanIdBeingProcessed(planId); // Set which plan is being processed
         setError(null);
+
         try {
-            const res = await fetch('http://localhost:3001/api/stripe/create-checkout-session', {
+            const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+            const res = await fetch(`${backendUrl}/api/stripe/create-checkout-session`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                // body: JSON.stringify({ itemId: planId }) // Future: pass planId to backend
+                body: JSON.stringify({ itemId: itemId, userId: userId }) // Pass itemId and userId
             });
 
             if (!res.ok) {
@@ -45,6 +67,7 @@ export default function PricingPage() {
             setError(err.message || 'An unexpected error occurred. Please try again.');
         } finally {
             setIsLoading(false);
+            setPlanIdBeingProcessed(null); // Reset after attempt
         }
     };
 
@@ -52,33 +75,36 @@ export default function PricingPage() {
         {
             id: 'single_report',
             name: 'Single Report',
-            price: '$19',
-            priceSuffix: '.99',
+            price: '$200',
+            priceSuffix: '.00',
             description: 'A complete 5-section natal chart analysis.',
             features: [
                 'Full 5-section analysis', 'Psychological Profile', 'Career Strengths',
                 'Relationship Patterns', 'Karmic Lessons', 'Major Transits (1-2 yrs)'
             ],
             buttonText: 'Purchase Now',
-            buttonClass: 'btn-primary', // Use class from globals.css
+            buttonClass: 'btn-primary',
             borderColor: 'border-purple-500/50',
             textColor: 'text-purple-300',
             gradientClass: 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700',
             disabled: false,
+            itemId: 'single_report_20000' // item ID for Stripe, price in cents
         },
         {
-            id: '3_pack_bundle',
-            name: '3-Pack Bundle',
-            price: '$49',
-            priceSuffix: '.99',
-            originalPrice: '$59.97',
-            description: 'Save $10! Three full reports.',
-            features: ['Three full reports', 'Share with friends or family', 'Best value for multiple readings'],
-            buttonText: 'Coming Soon',
-            buttonClass: 'bg-slate-600 text-slate-400 cursor-not-allowed',
-            borderColor: 'border-slate-700/50',
+            id: 'bundle_3_reports', // New ID for this bundle
+            name: '3 Report Bundle',
+            price: '$480', // New Price
+            priceSuffix: '.00',
+            originalPrice: '$600.00', // Original price if 3 * $200
+            description: 'Save $120! Three full reports.',
+            features: ['Three full reports', 'Perfect for gifting or multiple analyses', 'Best value for dedicated explorers'],
+            buttonText: 'Purchase Bundle',
+            buttonClass: 'btn-primary',
+            borderColor: 'border-teal-500/50',
             textColor: 'text-teal-300',
-            disabled: true,
+            gradientClass: 'bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700',
+            disabled: false,
+            itemId: 'bundle_3_reports_48000'
         },
         {
             id: 'monthly_explorer',
@@ -92,6 +118,7 @@ export default function PricingPage() {
             borderColor: 'border-slate-700/50',
             textColor: 'text-blue-300',
             disabled: true,
+            itemId: 'monthly_sub_1499' // Example itemId
         },
         {
             id: 'annual_pro',
@@ -105,42 +132,50 @@ export default function PricingPage() {
             borderColor: 'border-slate-700/50',
             textColor: 'text-yellow-300',
             disabled: true,
+            itemId: 'annual_sub_11999' // Example itemId
         },
     ];
 
     return (
-        <div className="py-12 md:py-20"> {/* Adjusted padding, min-h-screen removed as layout handles it */}
-            <div className="container mx-auto px-4">
-                <h1 className="text-4xl md:text-5xl font-bold text-center mb-12 cosmic-text-glow">
+        <div className="py-8 sm:py-12 md:py-20"> {/* Adjusted padding for smaller screens */}
+            <div className="container mx-auto px-4 sm:px-6"> {/* Adjusted padding for smaller screens */}
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-10 sm:mb-12 cosmic-text-glow">
                     Choose Your Cosmic Path
                 </h1>
 
                 {error && (
-                    <div className="mb-8 p-4 bg-red-700/30 border border-red-600 text-red-300 rounded-md text-center max-w-md mx-auto">
-                        <p className="font-semibold">Payment Error:</p>
+                    <div className="mb-8 p-3 sm:p-4 bg-red-700/30 border border-red-600 text-red-300 rounded-md text-center max-w-md mx-auto text-sm sm:text-base">
+                        <p className="font-semibold">Error:</p>
                         <p>{error}</p>
                     </div>
                 )}
+                 {!userId && !isLoading && (
+                    <div className="mb-8 p-3 sm:p-4 bg-yellow-700/30 border border-yellow-600 text-yellow-300 rounded-md text-center max-w-md mx-auto text-sm sm:text-base">
+                        <p className="font-semibold">User Not Identified</p>
+                        <p>Please <Link href="/login" className="underline hover:text-yellow-200">log in</Link> to make purchases and link credits to your account.</p>
+                    </div>
+                )}
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 max-w-7xl mx-auto">
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 max-w-7xl mx-auto"> {/* Ensure grid stacks on smallest screens */}
                     {plans.map((plan) => (
-                        <div key={plan.id} className={`bg-slate-800/70 p-6 rounded-xl shadow-2xl border ${plan.borderColor} transform hover:scale-105 transition-transform duration-300 flex flex-col`}>
-                            <h2 className={`text-2xl font-semibold mb-2 ${plan.textColor}`}>{plan.name}</h2>
+                        <div key={plan.id} className={`bg-slate-800/70 p-5 sm:p-6 rounded-xl shadow-2xl border ${plan.borderColor} transform hover:scale-105 transition-transform duration-300 flex flex-col`}>
+                            <h2 className={`text-xl sm:text-2xl font-semibold mb-2 ${plan.textColor}`}>{plan.name}</h2>
                             <div className="mb-3">
-                                <span className="text-4xl font-bold">{plan.price}</span>
-                                <span className="text-xl align-top">{plan.priceSuffix}</span>
-                                {plan.originalPrice && <span className="text-sm line-through text-slate-400 ml-2">{plan.originalPrice}</span>}
+                                <span className="text-3xl sm:text-4xl font-bold">{plan.price}</span>
+                                <span className="text-lg sm:text-xl align-top">{plan.priceSuffix}</span>
+                                {plan.originalPrice && <span className="text-xs sm:text-sm line-through text-slate-400 ml-2">{plan.originalPrice}</span>}
                             </div>
-                            <p className="text-sm text-gray-400 mb-4 min-h-[40px]">{plan.description}</p>
-                            <ul className="mb-6 text-sm text-gray-400 space-y-2 flex-grow">
+                            <p className="text-xs sm:text-sm text-gray-400 mb-4 min-h-[30px] sm:min-h-[40px]">{plan.description}</p>
+                            <ul className="mb-5 sm:mb-6 text-xs sm:text-sm text-gray-400 space-y-1 sm:space-y-2 flex-grow">
                                 {plan.features.map(feature => <li key={feature}>✓ {feature}</li>)}
                             </ul>
                             <button
-                                onClick={() => handlePurchase(plan.id)}
+                                onClick={() => handlePurchase(plan.id, plan.itemId)}
                                 disabled={plan.disabled || isLoading}
-                                className={`w-full font-bold py-3 px-4 rounded-lg shadow-lg transition duration-150 ease-in-out disabled:opacity-60 disabled:cursor-not-allowed ${plan.disabled ? plan.buttonClass : plan.gradientClass || plan.buttonClass}`}
+                                className={`w-full font-bold py-2.5 sm:py-3 px-4 rounded-lg shadow-lg transition duration-150 ease-in-out disabled:opacity-60 disabled:cursor-not-allowed text-sm sm:text-base ${plan.disabled ? plan.buttonClass : plan.gradientClass || plan.buttonClass}`}
                             >
-                                {isLoading && plan.id === 'single_report' ? 'Processing...' : plan.buttonText}
+                                {isLoading && plan.id === planIdBeingProcessed ? 'Processing...' : plan.buttonText}
                             </button>
                         </div>
                     ))}
@@ -149,7 +184,7 @@ export default function PricingPage() {
                     Payments are securely processed by Stripe. You will be redirected to Stripe Checkout.
                 </p>
                  <p className="mt-4 text-center text-sm">
-                    <a href="/generate-report">Back to Report Generation</a>
+                    <Link href="/generate-report" className="text-purple-400 hover:text-purple-300">Back to Report Generation</Link>
                 </p>
             </div>
         </div>
