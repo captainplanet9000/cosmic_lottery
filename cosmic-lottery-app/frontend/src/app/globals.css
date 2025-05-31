@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  /* Using a slightly lighter shade than the header for page content background if needed, or keep it consistent.
+     Will be overridden by specific page bg-slate-900/950 etc. */
+  @apply bg-slate-950 text-gray-200;
+}
+
+.cosmic-text-glow {
+  text-shadow: 0 0 8px rgba(192, 132, 252, 0.7), /* purple-400 at 70% */
+               0 0 12px rgba(192, 132, 252, 0.5), /* purple-400 at 50% */
+               0 0 20px rgba(255, 255, 255, 0.2); /* A bit of white for brighter core */
+}
+
+/* General link styling (can be overridden by specific components) */
+a {
+  @apply text-purple-400 hover:text-purple-300 transition-colors duration-150;
+}
+
+/* Consistent button styling (example, can be expanded) */
+.btn-primary {
+  @apply py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg shadow-md transition-colors duration-150 ease-in-out;
+}
+
+.btn-secondary {
+  @apply py-2 px-4 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-lg shadow-md transition-colors duration-150 ease-in-out;
+}
+
+/* Consistent input styling */
+.form-input {
+  @apply mt-1 block w-full px-3 py-2 bg-slate-700 border border-slate-600 rounded-md shadow-sm placeholder-slate-400
+         focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500 sm:text-sm text-gray-200;
+}
+
+/* Custom scrollbar for a more thematic feel (optional, WebKit browsers) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #1e293b; /* slate-800 */
+}
+::-webkit-scrollbar-thumb {
+  background: #581c87; /* purple-800 */
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #6b21a8; /* purple-700 */
+}
