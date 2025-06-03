@@ -100,9 +100,9 @@ export default function GenerateReportPage() {
         if (autocompleteRef.current) {
             const place = autocompleteRef.current.getPlace();
             if (place && place.formatted_address) {
-                setFormData(prev => ({ ...prev, birthPlace: place.formatted_address }));
+                setFormData(prev => ({ ...prev, birthPlace: place.formatted_address || '' }));
             } else if (place && place.name) {
-                 setFormData(prev => ({ ...prev, birthPlace: place.name }));
+                 setFormData(prev => ({ ...prev, birthPlace: place.name || '' }));
             }
         }
     };
