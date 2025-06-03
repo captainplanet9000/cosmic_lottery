@@ -16,9 +16,9 @@ const cinzel = Cinzel({
 })
 
 export const metadata: Metadata = {
-  title: 'Cosmic Lottery - Discover Your Astrological Fortune',
-  description: 'Generate your personalized birth chart report with our cosmic lottery system. Uncover your astrological strengths, personality insights, and cosmic destiny.',
-  keywords: ['astrology', 'birth chart', 'horoscope', 'lottery', 'fortune', 'zodiac', 'natal chart'],
+  title: 'Cosmic Birth Charts - Professional Astrology Reports',
+  description: 'Generate your personalized natal chart report with AI-powered astrological analysis. Discover your cosmic blueprint, personality insights, and celestial destiny.',
+  keywords: ['astrology', 'birth chart', 'horoscope', 'natal chart', 'zodiac', 'celestial', 'cosmic', 'planets'],
 }
 
 export default function RootLayout({

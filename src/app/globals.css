@@ -28,19 +28,20 @@
     focus:outline-none focus:ring-2 focus:ring-cosmic-secondary focus:border-transparent 
     text-cosmic-foreground placeholder:text-cosmic-muted-foreground;
   }  
-  .lottery-play-button {
+  
+  .astrology-chart-button {
     @apply bg-gradient-to-r from-cosmic-secondary to-amber-500 text-cosmic-background font-bold
     px-8 py-4 rounded-full shadow-lg transform transition-all duration-300
     hover:scale-105 hover:shadow-xl hover:from-amber-500 hover:to-cosmic-secondary
     focus:outline-none focus:ring-2 focus:ring-cosmic-secondary focus:ring-opacity-50;
   }
 
-  .cosmic-spinner {
+  .celestial-glow {
     @apply relative w-32 h-32 animate-cosmic-spin;
   }
 
-  .golden-ticket {
-    @apply bg-golden-ticket text-cosmic-background font-bold rounded-lg p-6 shadow-lg;
+  .astrology-card {
+    @apply bg-cosmic-card text-cosmic-foreground font-bold rounded-lg p-6 shadow-lg border border-cosmic-secondary/20;
   }
 
   /* Loading Screen Animation */
@@ -64,7 +65,7 @@
   100% { opacity: 0; }
 }
 
-@keyframes pulse-glow {
+@keyframes celestial-pulse {
   0%, 100% { 
     box-shadow: 0 0 15px 5px rgba(255, 215, 0, 0.4);
     transform: scale(1);

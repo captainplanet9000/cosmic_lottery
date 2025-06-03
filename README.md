@@ -1,16 +1,16 @@
-# Cosmic Lottery
+# Cosmic Birth Charts
 
-A modern web application that provides personalized astrological reports, cosmic insights, and an engaging gamification system.
+A modern web application that provides personalized natal chart reports, astrological insights, and celestial wisdom.
 
 ## Features
 
-- **Personalized Astrological Reports**: Generate detailed reports based on your birth data
-- **Cosmic Coins**: Earn and spend virtual currency for premium features
-- **Achievements**: Unlock special achievements as you explore your cosmic journey
+- **Personalized Birth Chart Reports**: Generate detailed natal charts based on your birth data
+- **Astrological Credits**: Earn and spend credits for premium chart features
+- **Achievements**: Unlock special achievements as you explore your astrological journey
 - **Referral System**: Invite friends and earn rewards
 - **VIP Tiers**: Access exclusive features with premium memberships
-- **Daily Horoscopes**: Get personalized daily insights
-- **Cosmic Events**: Stay informed about significant astrological events
+- **Daily Horoscopes**: Get personalized daily celestial insights
+- **Cosmic Events**: Stay informed about significant astrological transits
 
 ## Technology Stack
 
@@ -32,8 +32,8 @@ A modern web application that provides personalized astrological reports, cosmic
 
 1. Clone the repository:
    ```
-   git clone https://github.com/yourusername/cosmic-lottery.git
-   cd cosmic-lottery
+   git clone https://github.com/yourusername/cosmic-birth-charts.git
+   cd cosmic-birth-charts
    ```
 
 2. Install dependencies:
@@ -62,7 +62,7 @@ A modern web application that provides personalized astrological reports, cosmic
    yarn dev
    ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## API Routes
 
@@ -75,7 +75,7 @@ The application includes comprehensive API routes for all features:
 - `/api/user`: User profile management
 - `/api/referrals`: Referral system management
 - `/api/vip-upgrade`: Manage VIP tier upgrades
-- `/api/cosmic-coins`: Virtual currency management
+- `/api/astrological-credits`: Credit management system
 - `/api/auth/callback`: Authentication callback handling
 - `/api/validate-referral`: Validate referral codes
 - `/api/vip-tiers`: Get VIP tier information
@@ -92,5 +92,5 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Acknowledgments
 
 - Astrological data and interpretations are for entertainment purposes only
-- Icons and illustrations from [source]
-- Developed with ❤️ by [Your Name/Team]
+- Icons and illustrations from various celestial sources
+- Developed with ❤️ for the astrological community

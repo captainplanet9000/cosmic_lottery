@@ -1,6 +1,7 @@
 'use client';
 import { loadStripe } from '@stripe/stripe-js';
-import { useState, useEffect } from 'react'; // Added useEffect for userId
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 // import { useRouter } from 'next/navigation'; // Optional: for redirecting to login
 
 // Make sure to replace with your actual test publishable key
@@ -75,8 +76,8 @@ export default function PricingPage() {
         {
             id: 'single_report',
             name: 'Single Report',
-            price: '$200',
-            priceSuffix: '.00',
+            price: '$19',
+            priceSuffix: '.99',
             description: 'A complete 5-section natal chart analysis.',
             features: [
                 'Full 5-section analysis', 'Psychological Profile', 'Career Strengths',
@@ -88,23 +89,23 @@ export default function PricingPage() {
             textColor: 'text-purple-300',
             gradientClass: 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700',
             disabled: false,
-            itemId: 'single_report_20000' // item ID for Stripe, price in cents
+            itemId: 'single_report_1999' // item ID for Stripe, price in cents
         },
         {
-            id: 'bundle_3_reports', // New ID for this bundle
-            name: '3 Report Bundle',
-            price: '$480', // New Price
-            priceSuffix: '.00',
-            originalPrice: '$600.00', // Original price if 3 * $200
-            description: 'Save $120! Three full reports.',
-            features: ['Three full reports', 'Perfect for gifting or multiple analyses', 'Best value for dedicated explorers'],
+            id: 'bundle_2_reports',
+            name: '2 Report Bundle',
+            price: '$29',
+            priceSuffix: '.99',
+            originalPrice: '$39.98', // Original price if 2 * $19.99
+            description: 'Save $9.99! Two full reports.',
+            features: ['Two full reports', 'Perfect for couples or family', 'Great value for multiple analyses'],
             buttonText: 'Purchase Bundle',
             buttonClass: 'btn-primary',
             borderColor: 'border-teal-500/50',
             textColor: 'text-teal-300',
             gradientClass: 'bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700',
             disabled: false,
-            itemId: 'bundle_3_reports_48000'
+            itemId: 'bundle_2_reports_2999'
         },
         {
             id: 'monthly_explorer',

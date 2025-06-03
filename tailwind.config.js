@@ -19,7 +19,19 @@ module.exports = {
           accent: '#FF6B6B',
           border: '#334155',
         },
-        'golden-ticket': '#FFD700',
+        'celestial-gold': '#FFD700',
+        'astrology': {
+          'sun': '#FFA500',
+          'moon': '#C0C0C0',
+          'mercury': '#87CEEB',
+          'venus': '#FFC0CB',
+          'mars': '#FF6B6B',
+          'jupiter': '#4169E1',
+          'saturn': '#DAA520',
+          'uranus': '#40E0D0',
+          'neptune': '#4682B4',
+          'pluto': '#8B4513',
+        }
       },
       fontFamily: {
         sans: ['var(--font-inter)'],
@@ -27,12 +39,11 @@ module.exports = {
       },
       animation: {
         'cosmic-spin': 'spin 3s linear infinite',
-        'cosmic-pulse': 'pulse-glow 2s ease-in-out infinite',
+        'celestial-pulse': 'celestial-pulse 2s ease-in-out infinite',
       },
       backgroundImage: {
         'cosmic-gradient': 'linear-gradient(to bottom, #0F172A, #1E1B4B, #0F172A)',
-      },
-      typography: (theme) => ({
+      },      typography: (theme) => ({
         cosmic: {
           css: {
             '--tw-prose-body': theme('colors.cosmic.foreground'),
