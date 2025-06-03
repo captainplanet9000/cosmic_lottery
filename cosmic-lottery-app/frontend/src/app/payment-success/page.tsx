@@ -1,8 +1,8 @@
 'use client';
 import { useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 
-export default function PaymentSuccessPage() {
+function PaymentSuccessContent() {
     const searchParams = useSearchParams();
     const sessionId = searchParams.get('session_id');
     const [isLoading, setIsLoading] = useState(true);
@@ -82,5 +82,18 @@ export default function PaymentSuccessPage() {
                 </a>
             </div>
         </div>
+    );
+}
+
+export default function PaymentSuccessPage() {
+    return (
+        <Suspense fallback={
+            <div className="flex flex-col items-center justify-center text-center py-20">
+                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-purple-500 mb-6"></div>
+                <h1 className="text-2xl font-semibold text-purple-300">Loading...</h1>
+            </div>
+        }>
+            <PaymentSuccessContent />
+        </Suspense>
     );
 }
