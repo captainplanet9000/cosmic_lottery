@@ -52,32 +52,32 @@ export async function GET(
             id: 'personality',
             title: 'Personality Profile',
             icon: '👤',
-            content: '<p>Your Gemini Sun sign forms the core of your personality, John. You are naturally versatile and curious, with a tendency to approach life in a communicative way. People often notice your adaptable nature when they first meet you.</p><p>Your planetary alignments suggest that you have a unique blend of qualities that allow you to excel in situations requiring versatility and communicative approaches. You may sometimes struggle with being too inconsistent, which is a common challenge for Gemini individuals.</p><p>Your Mercury placement indicates you communicate in a thoughtful and deliberate manner, processing information through both logical and intuitive channels. This gives you a balanced perspective when solving problems or making important decisions.</p>'
+            content: `<p>Your Gemini Sun sign forms the core of your personality, John. You are naturally versatile and curious, with a tendency to approach life in a communicative way. People often notice your adaptable nature when they first meet you.</p><p>Your planetary alignments suggest that you have a unique blend of qualities that allow you to excel in situations requiring versatility and communicative approaches. You may sometimes struggle with being too inconsistent, which is a common challenge for Gemini individuals.</p><p>Your Mercury placement indicates you communicate in a thoughtful and deliberate manner, processing information through both logical and intuitive channels. This gives you a balanced perspective when solving problems or making important decisions.</p>`
           },
           {
             id: 'career',
             title: 'Career & Vocation',
             icon: '💼',
-            content: '<p>Your astrological profile indicates strong potential in fields related to communications and writing. Your natural talents align well with careers that require teaching skills or knowledge.</p><p>Jupiter\'s placement in your chart suggests opportunity for growth through sales, while Saturn indicates areas where you might face challenges but ultimately develop mastery through dedicated effort.</p><p>Your North Node suggests that your highest professional fulfillment will come from work that allows you to utilize your natural Gemini qualities while pushing beyond your comfort zone to develop new skills related to public relations.</p>'
+            content: `<p>Your astrological profile indicates strong potential in fields related to communications and writing. Your natural talents align well with careers that require teaching skills or knowledge.</p><p>Jupiter's placement in your chart suggests opportunity for growth through sales, while Saturn indicates areas where you might face challenges but ultimately develop mastery through dedicated effort.</p><p>Your North Node suggests that your highest professional fulfillment will come from work that allows you to utilize your natural Gemini qualities while pushing beyond your comfort zone to develop new skills related to public relations.</p>`
           },
           {
             id: 'relationships',
             title: 'Relationships & Love',
             icon: '❤️',
-            content: '<p>In relationships, your Gemini nature makes you naturally communicative and adaptable. You tend to seek partners who appreciate your curious approach to love and connection.</p><p>Venus in your chart suggests you express affection through playful gestures and value inconsistent qualities in a partner. You may sometimes struggle with balancing independence and togetherness in relationships.</p><p>Your 7th house placement indicates that relationships play a significant role in your personal growth journey. Through partnerships, you learn important lessons about yourself and develop a deeper understanding of your needs and boundaries.</p>'
+            content: `<p>In relationships, your Gemini nature makes you naturally communicative and adaptable. You tend to seek partners who appreciate your curious approach to love and connection.</p><p>Venus in your chart suggests you express affection through playful gestures and value inconsistent qualities in a partner. You may sometimes struggle with balancing independence and togetherness in relationships.</p><p>Your 7th house placement indicates that relationships play a significant role in your personal growth journey. Through partnerships, you learn important lessons about yourself and develop a deeper understanding of your needs and boundaries.</p>`
           },
           {
             id: 'karmic',
             title: 'Karmic Lessons',
             icon: '🔮',
-            content: '<p>Your South Node placement suggests past life patterns related to developing patience and persistence through challenging circumstances. You came into this life with certain tendencies and comforts that may no longer serve your highest evolution.</p><p>Your karmic journey in this lifetime involves learning to balance self-reliance with healthy interdependence. The challenges you face in this area are not coincidental but purposefully designed to help you grow beyond old patterns.</p><p>Chiron\'s position in your chart indicates a core wound related to self-expression and creative confidence. Healing this wound is a significant part of your soul\'s journey and will unlock greater authenticity and purpose in your life.</p>'
+            content: `<p>Your South Node placement suggests past life patterns related to developing patience and persistence through challenging circumstances. You came into this life with certain tendencies and comforts that may no longer serve your highest evolution.</p><p>Your karmic journey in this lifetime involves learning to balance self-reliance with healthy interdependence. The challenges you face in this area are not coincidental but purposefully designed to help you grow beyond old patterns.</p><p>Chiron's position in your chart indicates a core wound related to self-expression and creative confidence. Healing this wound is a significant part of your soul's journey and will unlock greater authenticity and purpose in your life.</p>`
           },
           {
             id: 'transits',
             title: 'Current Transits',
             icon: '🌠',
-            content: '<p>The coming 12 months feature significant planetary movements affecting your chart, with Jupiter entering your 10th house, expanding career opportunities and public recognition. This influence will be particularly strong through the next 3-4 months.</p><p>Another key transit involves Saturn forming a trine to your natal Sun, supporting long-term goals and structured growth. This energy may feel challenging at times but offers tremendous growth potential if you remain flexible and open to new perspectives.</p><p>Later in the year, you\'ll experience Neptune transiting your 7th house, bringing both inspiration and clarity to relationships. This represents an important opportunity to make conscious choices that align with your authentic self and highest aspirations.</p>'
-          }
+            content: `<p>The coming 12 months feature significant planetary movements affecting your chart, with Jupiter entering your 10th house, expanding career opportunities and public recognition. This influence will be particularly strong through the next 3-4 months.</p><p>Another key transit involves Saturn forming a trine to your natal Sun, supporting long-term goals and structured growth. This energy may feel challenging at times but offers tremendous growth potential if you remain flexible and open to new perspectives.</p><p>Later in the year, you'll experience Neptune transiting your 7th house, bringing both inspiration and clarity to relationships. This represents an important opportunity to make conscious choices that align with your authentic self and highest aspirations.</p>`
+         }
         ],
         createdAt: '2025-05-25T10:30:00.000Z'
       };
@@ -97,31 +97,31 @@ export async function GET(
             id: 'personality',
             title: 'Personality Profile',
             icon: '👤',
-            content: '<p>Your Sagittarius Sun sign forms the core of your personality, Jane. You are naturally optimistic and adventurous, with a tendency to approach life in a philosophical way. People often notice your enthusiastic nature when they first meet you.</p><p>Your planetary alignments suggest that you have a unique blend of qualities that allow you to excel in situations requiring optimism and philosophical approaches. You may sometimes struggle with being too restless, which is a common challenge for Sagittarius individuals.</p><p>Your Mercury placement indicates you communicate in a thoughtful and deliberate manner, processing information through both logical and intuitive channels. This gives you a balanced perspective when solving problems or making important decisions.</p>'
+            content: `<p>Your Sagittarius Sun sign forms the core of your personality, Jane. You are naturally optimistic and adventurous, with a tendency to approach life in a philosophical way. People often notice your enthusiastic nature when they first meet you.</p><p>Your planetary alignments suggest that you have a unique blend of qualities that allow you to excel in situations requiring optimism and philosophical approaches. You may sometimes struggle with being too restless, which is a common challenge for Sagittarius individuals.</p><p>Your Mercury placement indicates you communicate in a thoughtful and deliberate manner, processing information through both logical and intuitive channels. This gives you a balanced perspective when solving problems or making important decisions.</p>`
           },
           {
             id: 'career',
             title: 'Career & Vocation',
             icon: '💼',
-            content: '<p>Your astrological profile indicates strong potential in fields related to travel and higher education. Your natural talents align well with careers that require publishing skills or knowledge.</p><p>Jupiter\'s placement in your chart suggests opportunity for growth through law, while Saturn indicates areas where you might face challenges but ultimately develop mastery through dedicated effort.</p><p>Your North Node suggests that your highest professional fulfillment will come from work that allows you to utilize your natural Sagittarius qualities while pushing beyond your comfort zone to develop new skills related to outdoor activities.</p>'
+            content: `<p>Your astrological profile indicates strong potential in fields related to travel and higher education. Your natural talents align well with careers that require publishing skills or knowledge.</p><p>Jupiter's placement in your chart suggests opportunity for growth through law, while Saturn indicates areas where you might face challenges but ultimately develop mastery through dedicated effort.</p><p>Your North Node suggests that your highest professional fulfillment will come from work that allows you to utilize your natural Sagittarius qualities while pushing beyond your comfort zone to develop new skills related to outdoor activities.</p>`
           },
           {
             id: 'relationships',
             title: 'Relationships & Love',
             icon: '❤️',
-            content: '<p>In relationships, your Sagittarius nature makes you naturally adventurous and optimistic. You tend to seek partners who appreciate your honest approach to love and connection.</p><p>Venus in your chart suggests you express affection through freedom-loving gestures and value restless qualities in a partner. You may sometimes struggle with balancing independence and togetherness in relationships.</p><p>Your 7th house placement indicates that relationships play a significant role in your personal growth journey. Through partnerships, you learn important lessons about yourself and develop a deeper understanding of your needs and boundaries.</p>'
+            content: `<p>In relationships, your Sagittarius nature makes you naturally adventurous and optimistic. You tend to seek partners who appreciate your honest approach to love and connection.</p><p>Venus in your chart suggests you express affection through freedom-loving gestures and value restless qualities in a partner. You may sometimes struggle with balancing independence and togetherness in relationships.</p><p>Your 7th house placement indicates that relationships play a significant role in your personal growth journey. Through partnerships, you learn important lessons about yourself and develop a deeper understanding of your needs and boundaries.</p>`
           },
           {
             id: 'karmic',
             title: 'Karmic Lessons',
             icon: '🔮',
-            content: '<p>Your South Node placement suggests past life patterns related to transforming fear into courage and decisive action. You came into this life with certain tendencies and comforts that may no longer serve your highest evolution.</p><p>Your karmic journey in this lifetime involves cultivating emotional intelligence and deeper self-awareness. The challenges you face in this area are not coincidental but purposefully designed to help you grow beyond old patterns.</p><p>Chiron\'s position in your chart indicates a core wound related to self-expression and creative confidence. Healing this wound is a significant part of your soul\'s journey and will unlock greater authenticity and purpose in your life.</p>'
+            content: `<p>Your South Node placement suggests past life patterns related to transforming fear into courage and decisive action. You came into this life with certain tendencies and comforts that may no longer serve your highest evolution.</p><p>Your karmic journey in this lifetime involves cultivating emotional intelligence and deeper self-awareness. The challenges you face in this area are not coincidental but purposefully designed to help you grow beyond old patterns.</p><p>Chiron's position in your chart indicates a core wound related to self-expression and creative confidence. Healing this wound is a significant part of your soul's journey and will unlock greater authenticity and purpose in your life.</p>`
           },
           {
             id: 'transits',
             title: 'Current Transits',
             icon: '🌠',
-            content: '<p>The coming 12 months feature significant planetary movements affecting your chart, with Uranus making a square to your natal Moon, triggering emotional breakthroughs and lifestyle changes. This influence will be particularly strong through the next 3-4 months.</p><p>Another key transit involves Neptune transiting your 7th house, bringing both inspiration and clarity to relationships. This energy may feel challenging at times but offers tremendous growth potential if you remain flexible and open to new perspectives.</p><p>Later in the year, you\'ll experience Pluto forming an opposition to your natal Venus, transforming your values and approach to love. This represents an important opportunity to make conscious choices that align with your authentic self and highest aspirations.</p>'
+            content: `<p>The coming 12 months feature significant planetary movements affecting your chart, with Uranus making a square to your natal Moon, triggering emotional breakthroughs and lifestyle changes. This influence will be particularly strong through the next 3-4 months.</p><p>Another key transit involves Neptune transiting your 7th house, bringing both inspiration and clarity to relationships. This energy may feel challenging at times but offers tremendous growth potential if you remain flexible and open to new perspectives.</p><p>Later in the year, you'll experience Pluto forming an opposition to your natal Venus, transforming your values and approach to love. This represents an important opportunity to make conscious choices that align with your authentic self and highest aspirations.</p>`
           }
         ],
         createdAt: '2025-05-20T15:45:00.000Z'
@@ -165,13 +165,13 @@ export async function GET(
             id: 'karmic',
             title: 'Karmic Lessons',
             icon: '🔮',
-            content: '<p>Your South Node reveals patterns from past lives that you're working to evolve beyond in this lifetime.</p><p>Your karmic journey involves specific lessons designed to help you grow spiritually and emotionally.</p><p>Chiron's position indicates core wounds that, when healed, can become sources of great wisdom and strength.</p>'
+            content: `<p>Your South Node reveals patterns from past lives that you're working to evolve beyond in this lifetime.</p><p>Your karmic journey involves specific lessons designed to help you grow spiritually and emotionally.</p><p>Chiron's position indicates core wounds that, when healed, can become sources of great wisdom and strength.</p>`
           },
           {
             id: 'transits',
             title: 'Current Transits',
             icon: '🌠',
-            content: '<p>The coming months feature planetary movements that will influence different areas of your life.</p><p>These transits create opportunities for growth, though some may initially present as challenges requiring adaptation.</p><p>By working consciously with these energies, you can make choices that align with your authentic self and highest path.</p>'
+            content: `<p>The coming months feature planetary movements that will influence different areas of your life.</p><p>These transits create opportunities for growth, though some may initially present as challenges requiring adaptation.</p><p>By working consciously with these energies, you can make choices that align with your authentic self and highest path.</p>`
           }
         ],
         createdAt: new Date().toISOString()
