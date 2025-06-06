@@ -44,7 +44,8 @@ const astrologyFacts = [
   "The 12 houses in your birth chart represent different areas of life, from identity to career and relationships.",
   "Eclipses are powerful cosmic events that can trigger significant life changes.",
   "Retrograde planets aren't moving backward—they just appear that way from Earth's perspective."
-]export default function GeneratingPage() {
+];
+export default function GeneratingPage() {
   const router = useRouter()
   const [progress, setProgress] = useState(0)
   const [currentFact, setCurrentFact] = useState(0)

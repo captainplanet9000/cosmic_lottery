@@ -106,7 +106,8 @@ const BirthDataForm: React.FC<BirthDataFormProps> = ({ currentStep }) => {
       ...base,
       color: '#F8FAFC',
     }),
-  }  return (
+  };
+  return (
     <AnimatePresence mode="wait">
       {currentStep === 0 && (
         <motion.div
@@ -167,35 +168,35 @@ const BirthDataForm: React.FC<BirthDataFormProps> = ({ currentStep }) => {
             <div className="grid grid-cols-3 gap-3">
               <div>
                 <label htmlFor="birthYear" className="block text-sm font-medium mb-1">Year</label>
-                <Select
-                  id="birthYear"
-                  options={years.reverse()}
-                  placeholder="Year"
-                  styles={selectStyles}
-                  {...register('birthYear', { required: 'Birth year is required' })}
-                />
+                  <Select
+                    id="birthYear"
+                    options={years.reverse()}
+                    placeholder="Year"
+                    styles={selectStyles}
+                    {...(register('birthYear', { required: 'Birth year is required' }) as any)}
+                  />
               </div>
               
               <div>
                 <label htmlFor="birthMonth" className="block text-sm font-medium mb-1">Month</label>
-                <Select
-                  id="birthMonth"
-                  options={months}
-                  placeholder="Month"
-                  styles={selectStyles}
-                  {...register('birthMonth', { required: 'Birth month is required' })}
-                />
+                  <Select
+                    id="birthMonth"
+                    options={months}
+                    placeholder="Month"
+                    styles={selectStyles}
+                    {...(register('birthMonth', { required: 'Birth month is required' }) as any)}
+                  />
               </div>
               
               <div>
                 <label htmlFor="birthDay" className="block text-sm font-medium mb-1">Day</label>
-                <Select
-                  id="birthDay"
-                  options={days}
-                  placeholder="Day"
-                  styles={selectStyles}
-                  {...register('birthDay', { required: 'Birth day is required' })}
-                />
+                  <Select
+                    id="birthDay"
+                    options={days}
+                    placeholder="Day"
+                    styles={selectStyles}
+                    {...(register('birthDay', { required: 'Birth day is required' }) as any)}
+                  />
               </div>
             </div>
             
@@ -222,7 +223,7 @@ const BirthDataForm: React.FC<BirthDataFormProps> = ({ currentStep }) => {
                       options={hours}
                       placeholder="Hour"
                       styles={selectStyles}
-                      {...register('birthHour', { required: !watch('unknownTime') && 'Birth hour is required' })}
+                      {...(register('birthHour', { required: !watch('unknownTime') && 'Birth hour is required' }) as any)}
                     />
                   </div>                  <div>
                     <label htmlFor="birthMinute" className="block text-sm font-medium mb-1">Minute</label>
@@ -231,7 +232,7 @@ const BirthDataForm: React.FC<BirthDataFormProps> = ({ currentStep }) => {
                       options={minutes}
                       placeholder="Minute"
                       styles={selectStyles}
-                      {...register('birthMinute', { required: !watch('unknownTime') && 'Birth minute is required' })}
+                      {...(register('birthMinute', { required: !watch('unknownTime') && 'Birth minute is required' }) as any)}
                     />
                   </div>
                 </div>
@@ -253,13 +254,13 @@ const BirthDataForm: React.FC<BirthDataFormProps> = ({ currentStep }) => {
           <div className="space-y-4">
             <div>
               <label htmlFor="birthLocation" className="block text-sm font-medium mb-1">Birth Location</label>
-              <Select
-                id="birthLocation"
-                options={locationOptions}
-                placeholder="Search for your birth city..."
-                styles={selectStyles}
-                {...register('birthLocation', { required: 'Birth location is required' })}
-              />
+                <Select
+                  id="birthLocation"
+                  options={locationOptions}
+                  placeholder="Search for your birth city..."
+                  styles={selectStyles}
+                  {...(register('birthLocation', { required: 'Birth location is required' }) as any)}
+                />
               {errors.birthLocation && (
                 <p className="mt-1 text-cosmic-accent text-sm">{errors.birthLocation.message?.toString()}</p>
               )}

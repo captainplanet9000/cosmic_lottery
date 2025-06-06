@@ -1,4 +1,4 @@
-import { createServerClient } from '@supabase/ssr';
+import { createServerClient as createSupabaseServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { Database } from '@/types/database.types';
 import { cache } from 'react';
@@ -10,7 +10,7 @@ export const createServerClient = cache(() => {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
   
-  return createServerClient<Database>(
+  return createSupabaseServerClient<Database>(
     supabaseUrl,
     supabaseAnonKey,
     {
